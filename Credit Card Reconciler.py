@@ -78,14 +78,41 @@ with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development
 df1 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile1.txt', engine="python", sep='\t')
 df2 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', engine="python", sep='\t')
 
-INNER_JOIN = pd.merge(df1, df2, how="inner", left_on=['LocName', 'Amount'], right_on=['LocationName', 'Debit'])
+df3 = pd.merge(df1, df2, how="inner", left_on=['LocName', 'Amount'], right_on=['LocationName', 'Debit'])
 
-print(INNER_JOIN)
+print(df3)
 
-#print(INNER_JOIN.info())
+#print(df3.info())
 
-INNER_JOIN['DateDifference'] = INNER_JOIN['PostDate'].astype('datetime64') - INNER_JOIN['Date'].astype('datetime64')
+df3['DateDifference'] = df3['PostDate'].astype('datetime64') - df3['Date'].astype('datetime64')
 
-print(INNER_JOIN)
+df3['DateDifference'] = df3['DateDifference'].dt.days
 
-INNER_JOIN.to_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile3.txt', sep='\t')
+df3.loc[(df3['DateDifference'] <=7) & (df3['DateDifference'] >=0), 'InRange?'] = 'True'
+df3.loc[(df3['DateDifference'] >7) | (df3['DateDifference'] <0), 'InRange?'] = 'False'
+
+
+
+#if df3['DateDifference'] <= 7 and df3 >= 0:
+    #print("In range")
+#else:
+    #print("******NOT IN RANGE******")
+
+
+
+df3.info()
+
+print(df3)
+
+df3.info()
+
+inRange = df3[df3['InRange?'] == 'True']
+
+notInRange = df3[df3['InRange?'] == 'False']
+
+#df3.to_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile3.txt', sep='\t')
+
+print("***************IN RANGE************************")
+print(inRange)
+print("***************NOT IN RANGE************************")
+print(notInRange)
