@@ -5,6 +5,7 @@ import numpy as np
 from csv import reader
 import xlrd
 import os
+import datetime
 
 
 locationDictionary = {'Astation' : 'Aurora Store Station', 'A PATP' : 'Aurora Store Station', 'ASTATION PATP' : 'Aurora Store Station', 'ASTATION' : 'Aurora Store Station', 'Main Office' : 'Admin', 'MAIN OFFICE' : "Admin", 'TIRE CENTER' : 'Aurora Tire Center', 'AW PATP' : 'Aurora West A Stop', 'Awest PATP' : 'Aurora West A Stop', 'AWPATP' : 'Aurora West A Stop', 'AWEST PATP' : 'Aurora West A Stop', 'CLAY CENTER' : 'Clay Center', 'Dannbrog PATP' : 'Dannebrog Station', 'DANNEBORG' : 'Dannebrog Station', 'Dannbrog Station' : 'Dannebrog Station', 'DANNEROG' : 'Dannebrog Station',  'Elwood' : 'Elwood Station', 'ELWOOD' : 'Elwood Station', 'GIBBON': 'Gibbon', 'GI PATP' : 'Grand Island', 'GISLAND' : 'Grand Island', 'GISLAND PATP' : 'Grand Island', 'Gisland' : 'Grand Island', 'GI FEED MILL' : 'Grand Island Grain & Feed', "GRANT" : 'Grant', 'GRANT PATP' : 'Grant', 'HARDY' : 'Hardy', "Harvard PATP" : "Harvard", "HARVARD" : "Harvard", "Hastings PATP" : 'Hastings', "HASTINGS"  : 'Hastings', "KEARNEY": 'Kearney', "Keen PATP" : "Keene", 'KEEN PATP' : "Keene", 'MINDEN' : 'Minden', 'MINDEN PATP': "Minden", 'Minden' : 'Minden', "POCOMOKE" : 'Pocomoke', 'StPaul' : 'St Paul Station', 'ST PAUL'  : 'St Paul Station', 'ST PAUL PATP' : 'St Paul Station', 'SUPERIOR' : 'Superior', 'UPLAND' : 'Upland', 'UPLAND PATP' : 'Upland', 'YORK PATP' : 'York', 'YORK' : 'York', 'York' : 'York'}
@@ -14,7 +15,7 @@ wb = load_workbook(readFile1, data_only=True)
 exportSheet = wb['Export']
 
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile1.txt', 'w') as f1:
-    f1.write("TRC Number" + "\t" +	"Account Number" + "\t" + "Account Type" + "\t" + "Account Name"  + "\t" +	"Post Date" + "\t" + "Reference" + "\t" + "Additional Reference" + "\t" + "Amount" + "\t" +	"Description" + "\t" + "Type" + "\t" + "Text"  + "\t" +	"Type"  + "\t" + "Loc #"  + "\t" +	"Loc Name" + "\n")
+    f1.write("TRCNumber" + "\t" +	"AccountNumber" + "\t" + "AccountType" + "\t" + "AccountName"  + "\t" +	"PostDate" + "\t" + "Reference" + "\t" + "AdditionalReference" + "\t" + "Amount" + "\t" +	"Description" + "\t" + "Type" + "\t" + "Text"  + "\t" +	"Type"  + "\t" + "LocNum"  + "\t" +	"LocName" + "\n")
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile1.txt', 'a') as f1:    
     for row in range(2, exportSheet.max_row + 1):
         TRC_NUMBER = exportSheet['A' + str(row)].value
@@ -50,7 +51,7 @@ wb2 = load_workbook(readFile2, data_only=True)
 glLedger = wb2['GeneralLedgerDetailReportList']
 
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', 'w') as f2:
-    f2.write("GL" + "\t" +	"PC" + "\t" + "Source Name" + "\t" + 'Account' + "\t" +	'Black Column' + "\t" +	'Name' + "\t" +	'CM' + "\t" + 'Loc'  + "\t" + 'Date' + "\t" + 'Ticket' + "\t" +	'Type' + "\t" +	'Debit' + "\t" + 'Credit' + "\t" + 'Qty' + "\t" + 'Running Balance' + "\t" + 'Source Description' + "\t" + 'Location Name' + "\t" + 'Import Cleared'  + "\t" + 'Comments' + '\n')
+    f2.write("GL" + "\t" +	"PC" + "\t" + "SourceName" + "\t" + 'Account' + "\t" +	'BlankColumn' + "\t" +	'Name' + "\t" +	'CM' + "\t" + 'Loc'  + "\t" + 'Date' + "\t" + 'Ticket' + "\t" +	'Type' + "\t" +	'Debit' + "\t" + 'Credit' + "\t" + 'Qty' + "\t" + 'RunningBalance' + "\t" + 'SourceDescription' + "\t" + 'LocationName' + "\t" + 'ImportCleared'  + "\t" + 'Comments' + '\n')
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', 'a') as f2:    
     for row in range(833, glLedger.max_row + 1):
         GL = glLedger['A' + str(row)].value
@@ -77,7 +78,13 @@ with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development
 df1 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile1.txt', engine="python", sep='\t')
 df2 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', engine="python", sep='\t')
 
-INNER_JOIN = pd.merge(df1, df2, how="inner", left_on=['Loc Name', 'Amount'], right_on=['Location Name', 'Debit'])
+INNER_JOIN = pd.merge(df1, df2, how="inner", left_on=['LocName', 'Amount'], right_on=['LocationName', 'Debit'])
+
+print(INNER_JOIN)
+
+#print(INNER_JOIN.info())
+
+INNER_JOIN['DateDifference'] = INNER_JOIN['PostDate'].astype('datetime64') - INNER_JOIN['Date'].astype('datetime64')
 
 print(INNER_JOIN)
 
