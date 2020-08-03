@@ -74,3 +74,11 @@ with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development
         COMMENTS = glLedger['S' + str(row)].value
         f2.write(str(GL) + "\t" + str(PC) + "\t" + str(SOURCE_NAME) + "\t" + str(ACCOUNT) + "\t" + str(BLANK) + "\t" + str(NAME) + "\t" + str(CM) + "\t" + str(LOC) + "\t" + str(DATE) + "\t" + str(TICKET) + "\t" + str(TYPE) + "\t" + str(DEBIT) + "\t" + str(CREDIT) + "\t" + str(QTY) + "\t" + str(RUNNING_BALANCE) + "\t" + str(SOURCE_DESCRIPTION) + "\t" + str(LOCATION_NAME) + "\t" + str(IMPORT_CLEARED) + "\t" + str(COMMENTS) + '\n')
 
+df1 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile1.txt', engine="python", sep='\t')
+df2 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', engine="python", sep='\t')
+
+INNER_JOIN = pd.merge(df1, df2, how="inner", left_on=['Loc Name', 'Amount'], right_on=['Location Name', 'Debit'])
+
+print(INNER_JOIN)
+
+INNER_JOIN.to_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile3.txt', sep='\t')
