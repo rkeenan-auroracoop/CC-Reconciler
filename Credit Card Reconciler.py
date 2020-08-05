@@ -49,10 +49,12 @@ wb.close()
 print("Closing workbook.")
 
 
-readFile2 = r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\Jun Credit Card Reconciliation to GL.xlsx'
+#readFile2 = r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\Jun Credit Card Reconciliation to GL.xlsx'
+readFile2 = input ("Please input the path to the file. This file path should contain transactions spreading over several months. This should be your GL transaction history file.\n ")
+
 wb2 = load_workbook(readFile2, data_only=True)
 glLedger = wb2['GeneralLedgerDetailReportList']
-startOnRowNumber = input("Enter the number of Excel row that you would like to start on. \n (This must be in integer format.) \n\n")
+startOnRowNumber = input("Enter the number of Excel row that you would like to start on. The row that you will want to start on will be 7 days prior to the start of the month's transactions in the first file that you entered in the previous step. \n (This must be in integer format.) \n\n")
 startOnRowNumber = int(startOnRowNumber.strip())
 
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', 'w') as f2:
@@ -127,3 +129,5 @@ print("***************NOT IN RANGE************************")
 print(notInRange)
 
 df3.to_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile3.txt', sep='\t')
+
+print("WriteFile3 is done. Check this file for matching transactions")
