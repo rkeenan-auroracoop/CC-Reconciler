@@ -10,7 +10,9 @@ import datetime
 
 locationDictionary = {'Astation' : 'Aurora Station Store', 'A PATP' : 'Aurora Station Store', 'ASTATION PATP' : 'Aurora Station Store', 'ASTATION' : 'Aurora Station Store', 'Main Office' : 'Admin', 'MAIN OFFICE' : "Admin", 'TIRE CENTER' : 'Aurora Tire Center', 'AW PATP' : 'Aurora West A Stop', 'Awest PATP' : 'Aurora West A Stop', 'AWPATP' : 'Aurora West A Stop', 'AWEST PATP' : 'Aurora West A Stop', 'CLAY CENTER' : 'Clay Center', 'Dannbrog PATP' : 'Dannebrog Station', 'DANNEBORG' : 'Dannebrog Station', 'Dannbrog Station' : 'Dannebrog Station', 'DANNEROG' : 'Dannebrog Station',  'Elwood' : 'Elwood Station', 'ELWOOD' : 'Elwood Station', 'GIBBON': 'Gibbon', 'GI PATP' : 'Grand Island', 'GISLAND' : 'Grand Island', 'GISLAND PATP' : 'Grand Island', 'Gisland' : 'Grand Island', 'GI FEED MILL' : 'Grand Island Grain & Feed', "GRANT" : 'Grant', 'GRANT PATP' : 'Grant', 'HARDY' : 'Hardy', "Harvard PATP" : "Harvard", "HARVARD" : "Harvard", "Hastings PATP" : 'Hastings', "HASTINGS"  : 'Hastings', "KEARNEY": 'Kearney', "Keen PATP" : "Keene", 'KEEN PATP' : "Keene", 'MINDEN' : 'Minden', 'MINDEN PATP': "Minden", 'Minden' : 'Minden', "POCOMOKE" : 'Pocomoke', 'StPaul' : 'St Paul Station', 'ST PAUL'  : 'St Paul Station', 'ST PAUL PATP' : 'St Paul Station', 'SUPERIOR' : 'Superior', 'UPLAND' : 'Upland', 'UPLAND PATP' : 'Upland', 'YORK PATP' : 'York', 'YORK' : 'York', 'York' : 'York'}
 
-readFile1 = r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\JuneExport.xlsx'
+#readFile1 = r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\JuneExport.xlsx'
+readFile1 = input ("Please input the path to the file. This file path should only be a file that contains one month of PostDates for CC transactions.\n ")
+
 
 wb = load_workbook(readFile1, data_only=True)
 exportSheet = wb['Export']
