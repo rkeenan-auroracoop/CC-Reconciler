@@ -8,9 +8,10 @@ import os
 import datetime
 
 
-locationDictionary = {'Astation' : 'Aurora Store Station', 'A PATP' : 'Aurora Store Station', 'ASTATION PATP' : 'Aurora Store Station', 'ASTATION' : 'Aurora Store Station', 'Main Office' : 'Admin', 'MAIN OFFICE' : "Admin", 'TIRE CENTER' : 'Aurora Tire Center', 'AW PATP' : 'Aurora West A Stop', 'Awest PATP' : 'Aurora West A Stop', 'AWPATP' : 'Aurora West A Stop', 'AWEST PATP' : 'Aurora West A Stop', 'CLAY CENTER' : 'Clay Center', 'Dannbrog PATP' : 'Dannebrog Station', 'DANNEBORG' : 'Dannebrog Station', 'Dannbrog Station' : 'Dannebrog Station', 'DANNEROG' : 'Dannebrog Station',  'Elwood' : 'Elwood Station', 'ELWOOD' : 'Elwood Station', 'GIBBON': 'Gibbon', 'GI PATP' : 'Grand Island', 'GISLAND' : 'Grand Island', 'GISLAND PATP' : 'Grand Island', 'Gisland' : 'Grand Island', 'GI FEED MILL' : 'Grand Island Grain & Feed', "GRANT" : 'Grant', 'GRANT PATP' : 'Grant', 'HARDY' : 'Hardy', "Harvard PATP" : "Harvard", "HARVARD" : "Harvard", "Hastings PATP" : 'Hastings', "HASTINGS"  : 'Hastings', "KEARNEY": 'Kearney', "Keen PATP" : "Keene", 'KEEN PATP' : "Keene", 'MINDEN' : 'Minden', 'MINDEN PATP': "Minden", 'Minden' : 'Minden', "POCOMOKE" : 'Pocomoke', 'StPaul' : 'St Paul Station', 'ST PAUL'  : 'St Paul Station', 'ST PAUL PATP' : 'St Paul Station', 'SUPERIOR' : 'Superior', 'UPLAND' : 'Upland', 'UPLAND PATP' : 'Upland', 'YORK PATP' : 'York', 'YORK' : 'York', 'York' : 'York'}
+locationDictionary = {'Astation' : 'Aurora Station Store', 'A PATP' : 'Aurora Station Store', 'ASTATION PATP' : 'Aurora Station Store', 'ASTATION' : 'Aurora Station Store', 'Main Office' : 'Admin', 'MAIN OFFICE' : "Admin", 'TIRE CENTER' : 'Aurora Tire Center', 'AW PATP' : 'Aurora West A Stop', 'Awest PATP' : 'Aurora West A Stop', 'AWPATP' : 'Aurora West A Stop', 'AWEST PATP' : 'Aurora West A Stop', 'CLAY CENTER' : 'Clay Center', 'Dannbrog PATP' : 'Dannebrog Station', 'DANNEBORG' : 'Dannebrog Station', 'Dannbrog Station' : 'Dannebrog Station', 'DANNEROG' : 'Dannebrog Station',  'Elwood' : 'Elwood Station', 'ELWOOD' : 'Elwood Station', 'GIBBON': 'Gibbon', 'GI PATP' : 'Grand Island', 'GISLAND' : 'Grand Island', 'GISLAND PATP' : 'Grand Island', 'Gisland' : 'Grand Island', 'GI FEED MILL' : 'Grand Island Grain & Feed', "GRANT" : 'Grant', 'GRANT PATP' : 'Grant', 'HARDY' : 'Hardy', "Harvard PATP" : "Harvard", "HARVARD" : "Harvard", "Hastings PATP" : 'Hastings', "HASTINGS"  : 'Hastings', "KEARNEY": 'Kearney', "Keen PATP" : "Keene", 'KEEN PATP' : "Keene", 'MINDEN' : 'Minden', 'MINDEN PATP': "Minden", 'Minden' : 'Minden', "POCOMOKE" : 'Pocomoke', 'StPaul' : 'St Paul Station', 'ST PAUL'  : 'St Paul Station', 'ST PAUL PATP' : 'St Paul Station', 'SUPERIOR' : 'Superior', 'UPLAND' : 'Upland', 'UPLAND PATP' : 'Upland', 'YORK PATP' : 'York', 'YORK' : 'York', 'York' : 'York'}
 
 readFile1 = r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\JuneExport.xlsx'
+
 wb = load_workbook(readFile1, data_only=True)
 exportSheet = wb['Export']
 
@@ -49,11 +50,13 @@ print("Closing workbook.")
 readFile2 = r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\Jun Credit Card Reconciliation to GL.xlsx'
 wb2 = load_workbook(readFile2, data_only=True)
 glLedger = wb2['GeneralLedgerDetailReportList']
+startOnRowNumber = input("Enter the number of Excel row that you would like to start on. \n (This must be in integer format.) \n\n")
+startOnRowNumber = int(startOnRowNumber.strip())
 
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', 'w') as f2:
     f2.write("GL" + "\t" +	"PC" + "\t" + "SourceName" + "\t" + 'Account' + "\t" +	'BlankColumn' + "\t" +	'Name' + "\t" +	'CM' + "\t" + 'Loc'  + "\t" + 'Date' + "\t" + 'Ticket' + "\t" +	'Type' + "\t" +	'Debit' + "\t" + 'Credit' + "\t" + 'Qty' + "\t" + 'RunningBalance' + "\t" + 'SourceDescription' + "\t" + 'LocationName' + "\t" + 'ImportCleared'  + "\t" + 'Comments' + '\n')
 with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', 'a') as f2:    
-    for row in range(833, glLedger.max_row + 1):
+    for row in range(startOnRowNumber, glLedger.max_row + 1):
         GL = glLedger['A' + str(row)].value
         PC = glLedger['B' + str(row)].value
         SOURCE_NAME = glLedger['C' + str(row)].value
@@ -75,8 +78,21 @@ with open(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development
         COMMENTS = glLedger['S' + str(row)].value
         f2.write(str(GL) + "\t" + str(PC) + "\t" + str(SOURCE_NAME) + "\t" + str(ACCOUNT) + "\t" + str(BLANK) + "\t" + str(NAME) + "\t" + str(CM) + "\t" + str(LOC) + "\t" + str(DATE) + "\t" + str(TICKET) + "\t" + str(TYPE) + "\t" + str(DEBIT) + "\t" + str(CREDIT) + "\t" + str(QTY) + "\t" + str(RUNNING_BALANCE) + "\t" + str(SOURCE_DESCRIPTION) + "\t" + str(LOCATION_NAME) + "\t" + str(IMPORT_CLEARED) + "\t" + str(COMMENTS) + '\n')
 
+print("WriteFile2.txt is done!")
+wb.close()
+print("Closing workbook.")
+
 df1 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile1.txt', engine="python", sep='\t')
+df1 = df1.sort_values(by=['LocName', 'PostDate', 'Amount'], ascending=False)
+
+
+
 df2 = pd.read_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile2.txt', engine="python", sep='\t')
+df2 = df2.sort_values(by=["LocationName", "Date", "Debit"], ascending=False)
+
+df2 = df2[df2.Type != 'clear']
+df2 = df2[df2.Type != 'clera']
+df2 = df2[df2.Type != 'ctear']
 
 df3 = pd.merge(df1, df2, how="inner", left_on=['LocName', 'Amount'], right_on=['LocationName', 'Debit'])
 
@@ -91,28 +107,21 @@ df3['DateDifference'] = df3['DateDifference'].dt.days
 df3.loc[(df3['DateDifference'] <=7) & (df3['DateDifference'] >=0), 'InRange?'] = 'True'
 df3.loc[(df3['DateDifference'] >7) | (df3['DateDifference'] <0), 'InRange?'] = 'False'
 
+#df3.info()
 
+#print(df3)
 
-#if df3['DateDifference'] <= 7 and df3 >= 0:
-    #print("In range")
-#else:
-    #print("******NOT IN RANGE******")
-
-
-
-df3.info()
-
-print(df3)
-
-df3.info()
+#df3.info()
 
 inRange = df3[df3['InRange?'] == 'True']
 
 notInRange = df3[df3['InRange?'] == 'False']
 
-#df3.to_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile3.txt', sep='\t')
+df3.sort_values(by=["PostDate", "LocName"])
 
 print("***************IN RANGE************************")
 print(inRange)
 print("***************NOT IN RANGE************************")
 print(notInRange)
+
+df3.to_csv(r'C:\Users\rkeenan\OneDrive - Aurora Cooperative\Documents\Development\Account Reconciler\WriteFile3.txt', sep='\t')
